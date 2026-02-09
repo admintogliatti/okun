@@ -2,11 +2,9 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <!-- Самый важный тег для мобильных -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Жигулевский Окунь 2026 — Фестиваль</title>
     
-    <!-- ФАВИКОН (Горы) -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232D2624'/%3E%3Cpath d='M50 25 L85 80 L15 80 Z' fill='%23C4D600'/%3E%3C/svg%3E" type="image/svg+xml">
 
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Unbounded:wght@300;600;900&display=swap" rel="stylesheet">
@@ -35,9 +33,10 @@
             background-color: var(--bg-body);
             color: var(--text-main);
             font-family: 'Manrope', sans-serif;
-            overflow-x: hidden; /* Защита от горизонтального скролла */
+            overflow-x: hidden; /* Критично для мобильных */
             line-height: 1.6;
             font-size: 16px;
+            width: 100%;
         }
 
         /* Адаптивная типографика */
@@ -45,8 +44,7 @@
             font-family: 'Unbounded', sans-serif;
             text-transform: uppercase;
             font-weight: 800;
-            /* Шрифт меняется от 42px до 100px в зависимости от ширины экрана */
-            font-size: clamp(42px, 8vw, 100px); 
+            font-size: clamp(36px, 8vw, 100px); 
             line-height: 0.9;
             margin-bottom: 20px;
             letter-spacing: -1px;
@@ -56,7 +54,7 @@
             font-family: 'Unbounded', sans-serif;
             text-transform: uppercase;
             font-weight: 800;
-            font-size: clamp(28px, 5vw, 64px);
+            font-size: clamp(24px, 5vw, 64px);
             margin: 0;
             line-height: 1.1;
         }
@@ -77,7 +75,7 @@
             width: 100%;
             max-width: var(--container);
             margin: 0 auto;
-            padding: 0 20px; /* Отступы по бокам на мобильном */
+            padding: 0 20px;
         }
 
         .btn {
@@ -143,6 +141,7 @@
             border: 1px solid rgba(255,255,255,0.1);
             max-width: var(--container);
             margin: 0 auto;
+            width: 100%; /* Чтобы не сжимался */
         }
 
         .logo-img { height: 32px; width: auto; }
@@ -155,7 +154,7 @@
 
         /* --- Hero Section --- */
         .hero {
-            min-height: 100vh; /* На мобильном лучше 100vh */
+            min-height: 100vh;
             position: relative;
             display: flex;
             align-items: center;
@@ -171,10 +170,9 @@
         
         .hero-bg img {
             width: 100%; height: 100%; object-fit: cover;
-            filter: brightness(0.5); /* Чуть темнее для читаемости */
+            filter: brightness(0.5);
         }
         
-        /* Градиент чтобы текст читался на любом фото */
         .hero-bg::after {
             content: '';
             position: absolute;
@@ -198,7 +196,9 @@
             transform: rotate(-2deg) scale(1.02);
             margin: 40px 0 80px 0;
             width: 100vw;
-            margin-left: calc(-50vw + 50%); /* Выход за границы контейнера */
+            margin-left: calc(-50vw + 50%);
+            position: relative;
+            left: 0;
         }
         
         .marquee-content {
@@ -219,7 +219,7 @@
         
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 
-        /* --- Bento Grid (Сетка) --- */
+        /* --- Bento Grid --- */
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
@@ -249,7 +249,6 @@
 
         .card-big-text { font-size: clamp(16px, 3vw, 22px); font-weight: 500; }
 
-        /* Позиционирование в сетке (Desktop) */
         .span-8 { grid-column: span 8; }
         .span-6 { grid-column: span 6; }
         .span-4 { grid-column: span 4; }
@@ -355,34 +354,75 @@
         }
 
         /* =========================================
-           МОБИЛЬНАЯ АДАПТАЦИЯ (Media Queries)
+           МОБИЛЬНАЯ АДАПТАЦИЯ (ИСПРАВЛЕНИЯ)
            ========================================= */
         @media (max-width: 900px) {
-            /* Общее */
-            .btn { width: 100%; padding: 16px; font-size: 13px; }
-            .section-title-wrap { margin-bottom: 30px; }
+            /* 1. Header Fix - чтобы не выезжал */
+            header { top: 10px; padding: 0 10px; }
+            .nav-box { 
+                padding: 8px 12px; 
+                justify-content: space-between;
+            }
+            .nav-links { display: none; }
+            .logo-img { height: 24px; } /* Чуть меньше лого */
+            .btn { 
+                width: auto; 
+                padding: 10px 16px; 
+                font-size: 11px; 
+                height: 36px;
+            }
+
+            /* 2. Общие отступы */
+            .section-title-wrap { margin-bottom: 25px; padding-left: 15px; }
             
-            /* Навигация */
-            .nav-links { display: none; } /* Скрываем ссылки, оставляем кнопку */
-            .nav-box { padding: 8px 15px; }
-            .logo-img { height: 28px; }
-
-            /* Bento Grid превращаем в колонку */
+            /* 3. Bento Grid - карточки в колонку */
             .bento-grid { display: flex; flex-direction: column; gap: 15px; }
-            .card { min-height: auto; padding: 25px; border-radius: var(--radius-mob); }
-            .card-img { height: 250px; }
+            .card { min-height: auto; padding: 20px; border-radius: var(--radius-mob); }
+            .card-img { height: 220px; padding: 0; }
 
-            /* Гастрономия */
-            .gastro-wrapper { flex-direction: column-reverse; gap: 40px; margin-bottom: 80px; }
-            .gastro-image img { transform: rotate(0); } /* Убираем наклон, чтобы не резалось */
+            /* 4. Бегущая строка - защита от скролла */
+            .marquee-wrap {
+                width: 100vw;
+                margin-left: -20px; /* Компенсация паддинга контейнера */
+                margin-right: -20px;
+                transform: rotate(-2deg); /* Убираем scale, чтобы не вылезало */
+                margin-bottom: 60px;
+            }
 
-            /* Медиа */
-            .media-section { padding: 40px 20px; }
+            /* 5. Гастрономия */
+            .gastro-wrapper { flex-direction: column-reverse; gap: 30px; margin-bottom: 60px; }
+            .gastro-image img { transform: rotate(0); }
+
+            /* 6. Медиа */
+            .media-section { padding: 40px 15px; margin-bottom: 60px; }
             .stats-row { flex-direction: column; gap: 30px; }
 
-            /* Благотворительность */
-            .charity-block { grid-template-columns: 1fr; padding: 30px; border-radius: var(--radius-mob); }
-            .charity-gallery { height: auto; }
+            /* 7. Гости - строго одна колонка */
+            .people-grid {
+                grid-template-columns: 1fr; /* Было minmax, что ломало узкие экраны */
+                margin-bottom: 60px;
+            }
+
+            /* 8. Благотворительность (ДЕТИ) - ИСПРАВЛЕНО */
+            .charity-block { 
+                grid-template-columns: 1fr; 
+                padding: 20px; /* Меньше отступов */
+                border-radius: var(--radius-mob);
+                margin-bottom: 60px;
+            }
+            
+            /* Фотографии детей ставим в колонку, чтобы не сжимались */
+            .charity-gallery { 
+                grid-template-columns: 1fr; 
+                gap: 15px;
+            }
+            .charity-gallery img {
+                height: 200px; /* Фиксированная высота для красоты */
+                width: 100%;
+            }
+            
+            /* Footer */
+            footer { padding: 40px 0; }
         }
     </style>
 </head>
@@ -397,7 +437,7 @@
                 <a href="#media">Медиа</a>
                 <a href="#charity">Благотворительность</a>
             </nav>
-            <a href="#footer" class="btn" style="width: auto; padding: 10px 20px; font-size: 12px;">Связаться</a>
+            <a href="#footer" class="btn">Связаться</a>
         </div>
     </header>
 
@@ -418,17 +458,18 @@
     </section>
 
     <!-- Бегущая строка -->
-    <div class="marquee-wrap">
-        <div class="marquee-content">
-            <!-- Дублируем много раз для плавности -->
-            <div class="marquee-item">РЫБОЛОВНЫЙ СПОРТ</div>
-            <div class="marquee-item">ЖИГУЛЕВСК 2026</div>
-            <div class="marquee-item">36 МЛН ЗРИТЕЛЕЙ</div>
-            <div class="marquee-item">ГАСТРОФЕСТИВАЛЬ</div>
-            <div class="marquee-item">ДРАЙВ</div>
-            <div class="marquee-item">РЫБОЛОВНЫЙ СПОРТ</div>
-            <div class="marquee-item">ЖИГУЛЕВСК 2026</div>
-            <div class="marquee-item">36 МЛН ЗРИТЕЛЕЙ</div>
+    <div class="container" style="overflow: visible;"> <!-- Обертка для позиционирования -->
+        <div class="marquee-wrap">
+            <div class="marquee-content">
+                <div class="marquee-item">РЫБОЛОВНЫЙ СПОРТ</div>
+                <div class="marquee-item">ЖИГУЛЕВСК 2026</div>
+                <div class="marquee-item">36 МЛН ЗРИТЕЛЕЙ</div>
+                <div class="marquee-item">ГАСТРОФЕСТИВАЛЬ</div>
+                <div class="marquee-item">ДРАЙВ</div>
+                <div class="marquee-item">РЫБОЛОВНЫЙ СПОРТ</div>
+                <div class="marquee-item">ЖИГУЛЕВСК 2026</div>
+                <div class="marquee-item">36 МЛН ЗРИТЕЛЕЙ</div>
+            </div>
         </div>
     </div>
 
@@ -565,9 +606,6 @@
             </div>
         </div>
     </footer>
-
-</body>
-</html>
 
 </body>
 </html>
