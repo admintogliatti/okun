@@ -57,7 +57,6 @@
             padding: 0 20px;
         }
 
-        /* Кнопка CTA (Связаться/Подробнее) */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -135,15 +134,15 @@
             padding: 5px 15px;
         }
 
-        /* Ссылки в меню (ПК) - ИСПРАВЛЕНО */
+        /* Ссылки в меню (ПК) */
         .nav-links { display: flex; gap: 40px; margin-left: auto; margin-right: 30px; }
         .nav-links a { 
-            font-family: 'Unbounded', sans-serif; /* Шрифт как в заголовке */
+            font-family: 'Unbounded', sans-serif;
             font-weight: 700; 
             font-size: 12px; 
-            color: #FFFFFF; /* Чистый белый */
-            text-transform: uppercase; /* Заглавные */
-            text-decoration: none; /* Без подчеркивания */
+            color: #FFFFFF;
+            text-transform: uppercase;
+            text-decoration: none;
             letter-spacing: 0.5px;
             transition: color 0.3s;
         }
@@ -153,33 +152,59 @@
         .burger { display: none; cursor: pointer; flex-direction: column; gap: 5px; z-index: 1002; }
         .burger span { width: 24px; height: 2px; background: #fff; transition: 0.3s; }
         
-        /* Мобильное меню */
+        /* --- Мобильное меню (Обновленное) --- */
         .mobile-menu {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100vh;
-            background: var(--bg-body);
+            background: rgba(26, 24, 24, 0.98); /* Чуть прозрачнее черный */
+            backdrop-filter: blur(10px);
             z-index: 1001;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 30px;
             transform: translateY(-100%);
             transition: 0.4s ease-in-out;
+            padding: 20px;
         }
         .mobile-menu.active { transform: translateY(0); }
         
-        /* Ссылки в мобильном меню */
-        .mobile-menu a { 
-            font-family: 'Unbounded', sans-serif; 
-            font-size: 24px; 
-            font-weight: 800; 
-            color: #FFFFFF;
-            text-transform: uppercase;
-            text-decoration: none;
+        /* Список контейнеров меню */
+        .menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 320px; /* Ограничиваем ширину, чтобы не было гигантских кнопок */
         }
 
-        /* Кнопка ЗАКРЫТЬ в мобильном меню */
+        /* Контейнер пункта меню */
+        .menu-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background: rgba(255,255,255,0.05); /* Легкий фон */
+            border: 1px solid rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 16px; /* Как у карточек */
+            font-family: 'Unbounded', sans-serif;
+            font-size: 18px; /* Чуть меньше, чтобы влезало */
+            font-weight: 700;
+            color: #fff;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: 0.3s;
+            line-height: 1.2;
+        }
+
+        .menu-box:hover, .menu-box:active {
+            background: var(--accent);
+            color: var(--bg-body);
+            border-color: var(--accent);
+        }
+
+        /* Кнопка ЗАКРЫТЬ */
         .close-btn {
             position: absolute;
             top: 20px;
@@ -194,9 +219,6 @@
             border-radius: 50px;
             cursor: pointer;
             text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
 
         /* --- Hero Section --- */
@@ -364,15 +386,18 @@
 </head>
 <body>
 
-    <!-- Меню Гамбургер (Полноэкранное) -->
+    <!-- Меню Гамбургер (Полноэкранное с контейнерами) -->
     <div class="mobile-menu" id="mobMenu">
         <!-- Кнопка ЗАКРЫТЬ -->
         <button class="close-btn" onclick="toggleMenu()">✕ Закрыть</button>
 
-        <a href="#about" onclick="toggleMenu()">О проекте</a>
-        <a href="#media" onclick="toggleMenu()">Медиа</a>
-        <a href="#charity" onclick="toggleMenu()">Благотворительность</a>
-        <a href="#footer" onclick="toggleMenu()">Контакты</a>
+        <div class="menu-list">
+            <a href="#about" class="menu-box" onclick="toggleMenu()">О проекте</a>
+            <a href="#media" class="menu-box" onclick="toggleMenu()">Медиа</a>
+            <!-- Разделенное слово -->
+            <a href="#charity" class="menu-box" onclick="toggleMenu()">БЛАГО<br>ТВОРИТЕЛЬНОСТЬ</a>
+            <a href="#footer" class="menu-box" onclick="toggleMenu()">Контакты</a>
+        </div>
     </div>
 
     <!-- Навигация -->
