@@ -2,50 +2,82 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Самый важный тег для мобильных -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <title>Жигулевский Окунь 2026 — Фестиваль</title>
+    
+    <!-- ФАВИКОН (Горы) -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232D2624'/%3E%3Cpath d='M50 25 L85 80 L15 80 Z' fill='%23C4D600'/%3E%3C/svg%3E" type="image/svg+xml">
+
     <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Unbounded:wght@300;600;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            /* ЦВЕТОВАЯ СХЕМА: DARK MODE */
-            --bg-body: #1A1818;       /* Глубокий черный/шоколад */
-            --bg-card: #2D2624;       /* Цвет гор с логотипа */
-            --text-main: #FFFFFF;     /* Белый текст */
-            --text-muted: #B0B0B0;    /* Серый текст */
-            --accent: #C4D600;        /* Кислотный лайм (ярче чем на лого для контраста) */
+            /* DARK MODE */
+            --bg-body: #1A1818;       
+            --bg-card: #2D2624;       
+            --text-main: #FFFFFF;     
+            --text-muted: #B0B0B0;    
+            --accent: #C4D600;        
             --accent-hover: #DFFF00;
             
             --container: 1240px;
-            --radius: 24px;
+            --radius-desk: 24px;
+            --radius-mob: 16px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        /* Сброс и базовые настройки */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+        html { scroll-behavior: smooth; }
 
         body {
             background-color: var(--bg-body);
             color: var(--text-main);
             font-family: 'Manrope', sans-serif;
-            overflow-x: hidden;
+            overflow-x: hidden; /* Защита от горизонтального скролла */
             line-height: 1.6;
+            font-size: 16px;
         }
 
-        h1, h2, h3, h4 {
+        /* Адаптивная типографика */
+        h1 {
             font-family: 'Unbounded', sans-serif;
             text-transform: uppercase;
             font-weight: 800;
+            /* Шрифт меняется от 42px до 100px в зависимости от ширины экрана */
+            font-size: clamp(42px, 8vw, 100px); 
+            line-height: 0.9;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-family: 'Unbounded', sans-serif;
+            text-transform: uppercase;
+            font-weight: 800;
+            font-size: clamp(28px, 5vw, 64px);
             margin: 0;
+            line-height: 1.1;
+        }
+
+        h3, h4 {
+            font-family: 'Unbounded', sans-serif;
+            text-transform: uppercase;
+            font-weight: 700;
             color: var(--text-main);
         }
 
+        p { margin-bottom: 20px; }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
-        img { display: block; width: 100%; height: auto; }
+        img { display: block; width: 100%; height: auto; border-radius: inherit; }
 
         /* --- UI Components --- */
         .container {
+            width: 100%;
             max-width: var(--container);
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 20px; /* Отступы по бокам на мобильном */
         }
 
         .btn {
@@ -54,7 +86,7 @@
             justify-content: center;
             background: var(--accent);
             color: var(--bg-body);
-            padding: 20px 40px;
+            padding: 18px 36px;
             font-family: 'Unbounded', sans-serif;
             font-weight: 700;
             font-size: 14px;
@@ -62,62 +94,73 @@
             border-radius: 100px;
             cursor: pointer;
             border: none;
-            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            transition: all 0.3s;
+            white-space: nowrap;
         }
 
         .btn:hover {
             background: var(--accent-hover);
-            transform: scale(1.05);
+            transform: scale(1.02);
             box-shadow: 0 0 20px rgba(196, 214, 0, 0.4);
         }
 
-        .section-title {
-            font-size: clamp(32px, 5vw, 64px);
-            margin-bottom: 50px;
-            line-height: 1;
-            border-left: 10px solid var(--accent);
+        .tag {
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-family: 'Unbounded';
+            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+
+        .section-title-wrap {
+            margin-bottom: 40px;
+            border-left: 6px solid var(--accent);
             padding-left: 20px;
         }
 
         /* --- Header --- */
         header {
             position: fixed;
-            top: 20px;
+            top: 15px;
             left: 0;
             right: 0;
             z-index: 1000;
+            padding: 0 10px;
         }
 
         .nav-box {
-            background: rgba(45, 38, 36, 0.8); /* Полупрозрачная плашка */
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
+            background: rgba(45, 38, 36, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-radius: 100px;
-            padding: 15px 30px;
+            padding: 10px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border: 1px solid rgba(255,255,255,0.1);
+            max-width: var(--container);
+            margin: 0 auto;
         }
 
-        .logo-img { height: 40px; width: auto; }
+        .logo-img { height: 32px; width: auto; }
 
-        .nav-links { display: flex; gap: 40px; }
+        .nav-links { display: flex; gap: 30px; }
         .nav-links a { 
-            font-weight: 600; 
-            font-size: 13px; 
-            letter-spacing: 1px;
-            opacity: 0.8; 
+            font-weight: 600; font-size: 13px; opacity: 0.8; 
         }
         .nav-links a:hover { opacity: 1; color: var(--accent); }
 
         /* --- Hero Section --- */
         .hero {
-            height: 95vh;
+            min-height: 100vh; /* На мобильном лучше 100vh */
             position: relative;
             display: flex;
             align-items: center;
-            padding-top: 100px;
+            padding-top: 80px;
+            padding-bottom: 40px;
         }
 
         .hero-bg {
@@ -128,62 +171,36 @@
         
         .hero-bg img {
             width: 100%; height: 100%; object-fit: cover;
-            filter: brightness(0.4) contrast(1.1); /* Затемняем фото для контраста с текстом */
+            filter: brightness(0.5); /* Чуть темнее для читаемости */
         }
         
-        /* Градиент снизу, чтобы текст плавно переходил в фон */
+        /* Градиент чтобы текст читался на любом фото */
         .hero-bg::after {
             content: '';
             position: absolute;
-            bottom: 0; left: 0; width: 100%; height: 30%;
+            bottom: 0; left: 0; width: 100%; height: 50%;
             background: linear-gradient(to top, var(--bg-body), transparent);
         }
 
-        .hero-content {
-            position: relative;
-            z-index: 2;
-        }
-
-        .tag {
-            border: 1px solid var(--accent);
-            color: var(--accent);
-            padding: 8px 16px;
-            border-radius: 50px;
-            font-family: 'Unbounded';
-            font-size: 14px;
-            display: inline-block;
-            margin-bottom: 24px;
-        }
-
-        h1 {
-            font-size: clamp(60px, 9vw, 120px);
-            line-height: 0.85;
-            margin-bottom: 30px;
-            letter-spacing: -2px;
-        }
+        .hero-content { position: relative; z-index: 2; width: 100%; }
 
         .hero-desc {
-            font-size: 20px;
+            font-size: clamp(16px, 4vw, 20px);
             max-width: 600px;
             color: #ddd;
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
-        /* --- Marquee (Бегущая строка) --- */
+        /* --- Marquee --- */
         .marquee-wrap {
             background: var(--accent);
-            padding: 20px 0;
-            transform: rotate(-2deg) scale(1.05);
-            margin: 50px 0 100px 0;
-            box-shadow: 0 0 30px rgba(196, 214, 0, 0.2);
+            padding: 15px 0;
+            transform: rotate(-2deg) scale(1.02);
+            margin: 40px 0 80px 0;
+            width: 100vw;
+            margin-left: calc(-50vw + 50%); /* Выход за границы контейнера */
         }
         
-        .marquee {
-            white-space: nowrap;
-            overflow: hidden;
-            display: flex;
-        }
-
         .marquee-content {
             display: flex;
             animation: scroll 20s linear infinite;
@@ -193,190 +210,179 @@
             color: var(--bg-body);
             font-family: 'Unbounded';
             font-weight: 900;
-            font-size: 32px;
-            margin-right: 60px;
+            font-size: clamp(20px, 5vw, 32px);
+            margin-right: 40px;
             display: flex;
             align-items: center;
+            white-space: nowrap;
         }
         
-        .marquee-item::after {
-            content: '';
-            display: block;
-            width: 10px;
-            height: 10px;
-            background: var(--bg-body);
-            border-radius: 50%;
-            margin-left: 60px;
-        }
-
         @keyframes scroll { from { transform: translateX(0); } to { transform: translateX(-100%); } }
 
-        /* --- Bento Grid (Сетка карточек) --- */
+        /* --- Bento Grid (Сетка) --- */
         .bento-grid {
             display: grid;
             grid-template-columns: repeat(12, 1fr);
-            grid-auto-rows: minmax(250px, auto);
-            gap: 24px;
-            margin-bottom: 120px;
+            gap: 20px;
+            margin-bottom: 100px;
         }
 
         .card {
             background: var(--bg-card);
-            border-radius: var(--radius);
-            padding: 40px;
+            border-radius: var(--radius-desk);
+            padding: 30px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            transition: 0.4s;
             border: 1px solid rgba(255,255,255,0.05);
             overflow: hidden;
             position: relative;
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(255,255,255,0.2);
-        }
-
         .card-label {
             font-family: 'Unbounded';
-            font-size: 14px;
+            font-size: 12px;
             color: var(--accent);
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-transform: uppercase;
         }
 
-        .card-big-text {
-            font-size: 22px;
-            font-weight: 500;
-        }
+        .card-big-text { font-size: clamp(16px, 3vw, 22px); font-weight: 500; }
 
-        /* Настройка размеров ячеек */
+        /* Позиционирование в сетке (Desktop) */
         .span-8 { grid-column: span 8; }
         .span-6 { grid-column: span 6; }
         .span-4 { grid-column: span 4; }
-        .span-12 { grid-column: span 12; }
-
-        /* Спец. стили для карточек */
-        .card-img {
-            padding: 0;
-            position: relative;
-        }
-        .card-img img {
-            width: 100%; height: 100%; object-fit: cover;
-            transition: 0.5s;
-        }
-        .card-img:hover img { transform: scale(1.1); }
         
-        .card-stat {
-            background: var(--text-main);
-            color: var(--bg-body);
-        }
+        .card-img { padding: 0; min-height: 250px; }
+        .card-img img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .card-stat { background: var(--text-main); color: var(--bg-body); }
         .card-stat .card-label { color: #555; }
-        .stat-num { font-size: 80px; font-family: 'Unbounded'; font-weight: 900; line-height: 0.9; }
+        .stat-num { font-size: clamp(60px, 8vw, 80px); font-family: 'Unbounded'; font-weight: 900; line-height: 0.9; }
 
-        /* --- Gastronomy --- */
+        /* --- Gastro --- */
         .gastro-wrapper {
             display: flex;
             align-items: center;
             gap: 60px;
-            margin-bottom: 120px;
+            margin-bottom: 100px;
         }
         .gastro-content { flex: 1; }
-        .gastro-image { 
-            flex: 1; 
-            position: relative;
-        }
+        .gastro-image { flex: 1; }
         .gastro-image img {
-            border-radius: var(--radius);
+            border-radius: var(--radius-desk);
             border: 2px solid var(--accent);
             transform: rotate(3deg);
-            filter: grayscale(20%);
+            width: 100%;
         }
 
         /* --- Media --- */
         .media-section {
             background: linear-gradient(135deg, #1f1f1f, #2a2a2a);
-            border-radius: var(--radius);
-            padding: 80px;
+            border-radius: var(--radius-desk);
+            padding: 60px 20px;
             text-align: center;
-            margin-bottom: 120px;
+            margin-bottom: 100px;
             border: 1px solid rgba(255,255,255,0.1);
         }
         .stats-row {
             display: flex;
             justify-content: center;
-            gap: 80px;
-            margin-top: 60px;
+            gap: 40px;
+            margin-top: 40px;
             flex-wrap: wrap;
         }
-        .stat-item h3 { font-size: 60px; color: var(--accent); }
-        .stat-item p { font-size: 16px; color: var(--text-muted); margin-top: 10px; }
+        .stat-item h3 { font-size: clamp(40px, 6vw, 60px); color: var(--accent); }
+        .stat-item p { font-size: 14px; color: var(--text-muted); }
 
-        /* --- VIP & Charity --- */
+        /* --- Guests --- */
         .people-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-            margin-bottom: 120px;
+            gap: 20px;
+            margin-bottom: 100px;
         }
         .person-card {
             text-align: center;
             background: var(--bg-card);
-            padding: 40px 20px;
-            border-radius: var(--radius);
+            padding: 30px 20px;
+            border-radius: var(--radius-desk);
         }
         .avatar {
-            width: 160px; height: 160px;
+            width: 140px; height: 140px;
             border-radius: 50%;
             object-fit: cover;
-            margin: 0 auto 24px;
+            margin: 0 auto 20px;
             border: 3px solid var(--accent);
         }
 
+        /* --- Charity --- */
         .charity-block {
             background: var(--accent);
             color: var(--bg-body);
-            border-radius: var(--radius);
-            padding: 60px;
+            border-radius: var(--radius-desk);
+            padding: 40px;
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
             align-items: center;
+            margin-bottom: 80px;
         }
         .charity-block h2 { color: var(--bg-body); }
         .charity-gallery {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 10px;
         }
         .charity-gallery img {
             border-radius: 12px;
-            height: 220px;
+            height: 100%;
+            min-height: 150px;
             object-fit: cover;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
 
         /* --- Footer --- */
         footer {
             border-top: 1px solid rgba(255,255,255,0.1);
-            padding: 80px 0;
+            padding: 60px 0;
             text-align: center;
         }
         .footer-logo {
-            width: 150px; margin: 0 auto 30px;
+            width: 120px; margin: 0 auto 30px;
             opacity: 0.5;
             filter: grayscale(100%);
         }
 
-        /* Mobile Adapt */
+        /* =========================================
+           МОБИЛЬНАЯ АДАПТАЦИЯ (Media Queries)
+           ========================================= */
         @media (max-width: 900px) {
-            .bento-grid { display: flex; flex-direction: column; }
-            .gastro-wrapper { flex-direction: column-reverse; }
-            .charity-block { grid-template-columns: 1fr; }
-            .hero h1 { font-size: 48px; }
-            .nav-links { display: none; }
-            .stats-row { gap: 40px; }
+            /* Общее */
+            .btn { width: 100%; padding: 16px; font-size: 13px; }
+            .section-title-wrap { margin-bottom: 30px; }
+            
+            /* Навигация */
+            .nav-links { display: none; } /* Скрываем ссылки, оставляем кнопку */
+            .nav-box { padding: 8px 15px; }
+            .logo-img { height: 28px; }
+
+            /* Bento Grid превращаем в колонку */
+            .bento-grid { display: flex; flex-direction: column; gap: 15px; }
+            .card { min-height: auto; padding: 25px; border-radius: var(--radius-mob); }
+            .card-img { height: 250px; }
+
+            /* Гастрономия */
+            .gastro-wrapper { flex-direction: column-reverse; gap: 40px; margin-bottom: 80px; }
+            .gastro-image img { transform: rotate(0); } /* Убираем наклон, чтобы не резалось */
+
+            /* Медиа */
+            .media-section { padding: 40px 20px; }
+            .stats-row { flex-direction: column; gap: 30px; }
+
+            /* Благотворительность */
+            .charity-block { grid-template-columns: 1fr; padding: 30px; border-radius: var(--radius-mob); }
+            .charity-gallery { height: auto; }
         }
     </style>
 </head>
@@ -384,17 +390,14 @@
 
     <!-- Навигация -->
     <header>
-        <div class="container">
-            <div class="nav-box">
-                <img src="pictures/logo.png" alt="Logo" class="logo-img">
-                <nav class="nav-links">
-                    <a href="#about">О проекте</a>
-                    <a href="#media">Медиа</a>
-                    <a href="#guests">Гости</a>
-                    <a href="#charity">Благотворительность</a>
-                </nav>
-                <a href="#footer" class="btn" style="padding: 12px 24px; font-size: 12px;">Связаться</a>
-            </div>
+        <div class="nav-box">
+            <img src="pictures/logo.png" alt="Logo" class="logo-img">
+            <nav class="nav-links">
+                <a href="#about">О проекте</a>
+                <a href="#media">Медиа</a>
+                <a href="#charity">Благотворительность</a>
+            </nav>
+            <a href="#footer" class="btn" style="width: auto; padding: 10px 20px; font-size: 12px;">Связаться</a>
         </div>
     </header>
 
@@ -410,35 +413,32 @@
                 Ежегодный региональный фестиваль рыболовного спорта. 
                 Драйв, природа и крупнейшее медиа-освещение.
             </p>
-            <a href="#about" class="btn">Узнать подробнее</a>
+            <a href="#about" class="btn" style="width: auto;">Узнать подробнее</a>
         </div>
     </section>
 
     <!-- Бегущая строка -->
     <div class="marquee-wrap">
-        <div class="marquee">
-            <div class="marquee-content">
-                <div class="marquee-item">РЫБОЛОВНЫЙ СПОРТ</div>
-                <div class="marquee-item">ЖИГУЛЕВСК 2026</div>
-                <div class="marquee-item">36 МЛН ЗРИТЕЛЕЙ</div>
-                <div class="marquee-item">ГАСТРОФЕСТИВАЛЬ</div>
-                <div class="marquee-item">ДРАЙВ</div>
-                <!-- Дублируем для бесконечности -->
-                <div class="marquee-item">РЫБОЛОВНЫЙ СПОРТ</div>
-                <div class="marquee-item">ЖИГУЛЕВСК 2026</div>
-                <div class="marquee-item">36 МЛН ЗРИТЕЛЕЙ</div>
-                <div class="marquee-item">ГАСТРОФЕСТИВАЛЬ</div>
-                <div class="marquee-item">ДРАЙВ</div>
-            </div>
+        <div class="marquee-content">
+            <!-- Дублируем много раз для плавности -->
+            <div class="marquee-item">РЫБОЛОВНЫЙ СПОРТ</div>
+            <div class="marquee-item">ЖИГУЛЕВСК 2026</div>
+            <div class="marquee-item">36 МЛН ЗРИТЕЛЕЙ</div>
+            <div class="marquee-item">ГАСТРОФЕСТИВАЛЬ</div>
+            <div class="marquee-item">ДРАЙВ</div>
+            <div class="marquee-item">РЫБОЛОВНЫЙ СПОРТ</div>
+            <div class="marquee-item">ЖИГУЛЕВСК 2026</div>
+            <div class="marquee-item">36 МЛН ЗРИТЕЛЕЙ</div>
         </div>
     </div>
 
-    <!-- Сетка Bento (О фестивале) -->
+    <!-- Сетка Bento -->
     <section id="about" class="container">
-        <h2 class="section-title">О СОБЫТИИ</h2>
+        <div class="section-title-wrap">
+            <h2>О СОБЫТИИ</h2>
+        </div>
         
         <div class="bento-grid">
-            <!-- Блок с текстом -->
             <div class="card span-8">
                 <div class="card-label">Концепция</div>
                 <p class="card-big-text">
@@ -450,25 +450,19 @@
                 </div>
             </div>
 
-            <!-- Блок с цифрой -->
             <div class="card span-4 card-stat">
                 <div class="card-label">География</div>
                 <div class="stat-num">10+</div>
                 <div>ГОРОДОВ УЧАСТНИКОВ</div>
             </div>
 
-            <!-- Блок с фото -->
-            <div class="card span-6 card-img" style="height: 350px;">
+            <div class="card span-6 card-img">
                 <img src="pictures/fisher.jpeg" alt="Рыбак">
-                <div style="position: absolute; bottom: 20px; left: 20px; background: rgba(0,0,0,0.7); padding: 5px 10px; border-radius: 5px; font-size: 12px;">
-                    Фото: Архив 2025
-                </div>
             </div>
 
-            <!-- Блок с текстом 2 -->
             <div class="card span-6">
                 <div class="card-label">Атмосфера</div>
-                <p style="font-size: 18px; color: #ddd;">
+                <p style="font-size: 16px; color: #ddd;">
                     С каждым годом фестиваль приобретает все больший масштаб. Разнообразие активностей делает его интересным не только для спортсменов, но и для всех гостей города.
                 </p>
             </div>
@@ -483,8 +477,8 @@
             </div>
             <div class="gastro-content">
                 <div class="tag">ВКУСНО</div>
-                <h2 style="font-size: 48px; margin-bottom: 20px;">ЖИГУЛЕВСКАЯ УХА</h2>
-                <p style="font-size: 20px; color: var(--text-muted); margin-bottom: 30px;">
+                <h2 style="margin-bottom: 20px;">ЖИГУЛЕВСКАЯ УХА</h2>
+                <p style="color: var(--text-muted); margin-bottom: 30px;">
                     В формате рыболовного мероприятия проходит битва шеф-поваров именитых ресторанов.
                 </p>
                 <div style="border-left: 4px solid var(--accent); padding-left: 20px;">
@@ -523,17 +517,19 @@
 
     <!-- Гости -->
     <section id="guests" class="container">
-        <h2 class="section-title">ПОЧЕТНЫЕ ГОСТИ</h2>
+        <div class="section-title-wrap">
+            <h2>ПОЧЕТНЫЕ ГОСТИ</h2>
+        </div>
         <div class="people-grid">
             <div class="person-card">
                 <img src="pictures/sukhih.jpeg" alt="Сухих" class="avatar">
                 <h4>Сухих И.Г.</h4>
-                <p style="color: var(--text-muted); margin-top: 10px;">Глава г.о. Тольятти</p>
+                <p style="color: var(--text-muted); margin-top: 10px; font-size: 14px;">Глава г.о. Тольятти</p>
             </div>
             <div class="person-card">
                 <img src="pictures/bubencev.jpeg" alt="Бубенцев" class="avatar">
                 <h4>Бубенцев Д.В.</h4>
-                <p style="color: var(--text-muted); margin-top: 10px;">И.о. главы г.о. Жигулевск</p>
+                <p style="color: var(--text-muted); margin-top: 10px; font-size: 14px;">И.о. главы г.о. Жигулевск</p>
             </div>
         </div>
     </section>
@@ -542,15 +538,12 @@
     <section id="charity" class="container">
         <div class="charity-block">
             <div>
-                <h2>БЛАГОТВОРИТЕЛЬНОСТЬ</h2>
-                <p style="font-size: 18px; margin: 20px 0; color: #333; font-weight: 500;">
+                <h2 style="color: var(--bg-body);">БЛАГОТВОРИТЕЛЬНОСТЬ</h2>
+                <p style="font-size: 16px; margin: 20px 0; color: #333; font-weight: 500;">
                     По доброй традиции в мероприятии принимают участие воспитанники детского дома «Единство» (12-15 лет).
                 </p>
-                <p style="color: #333; opacity: 0.8;">
-                    Мы дарим подарки и привлекаем молодежь к спорту.
-                </p>
-                <div style="margin-top: 40px;">
-                    <div class="btn" style="background: var(--bg-body); color: var(--text-main);">Поддержать проект</div>
+                <div style="margin-top: 30px;">
+                    <div class="btn" style="background: var(--bg-body); color: var(--text-main); width: 100%;">Поддержать проект</div>
                 </div>
             </div>
             <div class="charity-gallery">
@@ -564,18 +557,17 @@
     <footer id="footer">
         <div class="container">
             <img src="pictures/logo.png" alt="logo" class="footer-logo">
-            <h3 style="font-size: 24px;">ЖИГУЛЕВСКИЙ ОКУНЬ 2026</h3>
-            <p style="color: var(--text-muted); margin: 20px 0;">Приглашаем к сотрудничеству!</p>
+            <h3 style="font-size: 20px;">ЖИГУЛЕВСКИЙ ОКУНЬ 2026</h3>
+            <p style="color: var(--text-muted); margin: 20px 0; font-size: 14px;">Приглашаем к сотрудничеству!</p>
             
             <div style="margin-top: 50px; font-size: 12px; color: #555;">
-                © 2026 Все права защищены. Дизайн в стиле 2026.
+                © 2026 Все права защищены.
             </div>
         </div>
     </footer>
 
 </body>
 </html>
-
 
 </body>
 </html>
