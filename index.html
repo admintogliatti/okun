@@ -7,7 +7,7 @@
     
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%232D2624'/%3E%3Cpath d='M50 25 L85 80 L15 80 Z' fill='%23C4D600'/%3E%3C/svg%3E" type="image/svg+xml">
 
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Unbounded:wght@300;600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700&family=Unbounded:wght@300;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -22,7 +22,7 @@
             --container: 1240px;
             --radius-desk: 24px;
             --radius-mob: 16px;
-            --nav-height: 60px; /* Фиксированная высота шапки для расчета лого */
+            --nav-height: 60px;
         }
 
         /* Сброс и базовые настройки */
@@ -40,7 +40,6 @@
             width: 100%;
         }
 
-        /* Глобальный фикс картинок */
         img { 
             display: block; 
             width: 100%; 
@@ -58,6 +57,7 @@
             padding: 0 20px;
         }
 
+        /* Кнопка CTA (Связаться/Подробнее) */
         .btn {
             display: inline-flex;
             align-items: center;
@@ -76,7 +76,6 @@
             white-space: nowrap;
             text-align: center;
         }
-
         .btn:hover {
             background: var(--accent-hover);
             transform: scale(1.02);
@@ -115,7 +114,6 @@
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border-radius: 100px;
-            /* Убираем левый паддинг, чтобы логотип касался края */
             padding: 0 20px 0 0; 
             display: flex;
             justify-content: space-between;
@@ -124,27 +122,34 @@
             max-width: var(--container);
             margin: 0 auto;
             height: var(--nav-height);
-            overflow: hidden; /* Чтобы логотип обрезался по форме */
+            overflow: hidden;
         }
 
         .logo-desk { 
-            height: 100%; /* На всю высоту панели */
+            height: 100%; 
             width: auto;
-            /* Скругление только слева, повторяя форму панели */
             border-top-left-radius: 100px;
             border-bottom-left-radius: 100px;
-            object-fit: contain; /* Чтобы логотип не искажался */
-            background: #fff; /* Фон для логотипа, чтобы он выделялся (опционально) */
-            padding: 5px 15px; /* Отступы внутри белого поля логотипа */
+            object-fit: contain;
+            background: #fff;
+            padding: 5px 15px;
         }
 
-        .nav-links { display: flex; gap: 30px; margin-left: auto; margin-right: 30px; }
+        /* Ссылки в меню (ПК) - ИСПРАВЛЕНО */
+        .nav-links { display: flex; gap: 40px; margin-left: auto; margin-right: 30px; }
         .nav-links a { 
-            font-weight: 600; font-size: 13px; opacity: 0.8; 
+            font-family: 'Unbounded', sans-serif; /* Шрифт как в заголовке */
+            font-weight: 700; 
+            font-size: 12px; 
+            color: #FFFFFF; /* Чистый белый */
+            text-transform: uppercase; /* Заглавные */
+            text-decoration: none; /* Без подчеркивания */
+            letter-spacing: 0.5px;
+            transition: color 0.3s;
         }
-        .nav-links a:hover { opacity: 1; color: var(--accent); }
+        .nav-links a:hover { color: var(--accent); }
 
-        /* Гамбургер (скрыт на ПК) */
+        /* Гамбургер */
         .burger { display: none; cursor: pointer; flex-direction: column; gap: 5px; z-index: 1002; }
         .burger span { width: 24px; height: 2px; background: #fff; transition: 0.3s; }
         
@@ -163,7 +168,36 @@
             transition: 0.4s ease-in-out;
         }
         .mobile-menu.active { transform: translateY(0); }
-        .mobile-menu a { font-family: 'Unbounded'; font-size: 24px; font-weight: 700; }
+        
+        /* Ссылки в мобильном меню */
+        .mobile-menu a { 
+            font-family: 'Unbounded', sans-serif; 
+            font-size: 24px; 
+            font-weight: 800; 
+            color: #FFFFFF;
+            text-transform: uppercase;
+            text-decoration: none;
+        }
+
+        /* Кнопка ЗАКРЫТЬ в мобильном меню */
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            font-family: 'Unbounded', sans-serif;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
 
         /* --- Hero Section --- */
         .hero {
@@ -190,10 +224,8 @@
 
         .hero-content { position: relative; z-index: 2; width: 100%; }
 
-        /* Лого для мобильного (скрыто на ПК) */
         .hero-logo-mob { display: none; }
 
-        /* Заголовок */
         h1 {
             font-family: 'Unbounded', sans-serif;
             text-transform: uppercase;
@@ -203,7 +235,7 @@
             margin-bottom: 20px;
             letter-spacing: -1px;
         }
-        .mob-break { display: none; } /* Перенос только для моб */
+        .mob-break { display: none; }
 
         .hero-desc {
             font-size: clamp(16px, 4vw, 20px);
@@ -212,7 +244,7 @@
             margin-bottom: 40px;
         }
 
-        /* Остальные стили (Bento, Marquee и т.д.) */
+        /* --- Marquee --- */
         .marquee-wrap {
             background: var(--accent);
             padding: 15px 0;
@@ -243,7 +275,7 @@
         .card-stat .card-label { color: #555; }
         .stat-num { font-size: clamp(60px, 8vw, 80px); font-family: 'Unbounded'; font-weight: 900; line-height: 0.9; }
 
-        /* Gastro, Media, Guests, Charity, Footer - стили такие же как в прошлом ответе */
+        /* Gastro, Media, Guests, Charity, Footer */
         .gastro-wrapper { display: flex; align-items: center; gap: 60px; margin-bottom: 100px; }
         .gastro-content { flex: 1; } .gastro-image { flex: 1; }
         .gastro-image img { border-radius: var(--radius-desk); border: 2px solid var(--accent); transform: rotate(3deg); }
@@ -278,41 +310,35 @@
            МОБИЛЬНАЯ АДАПТАЦИЯ
            ========================================= */
         @media (max-width: 900px) {
-            /* Header */
             header { top: 0; padding: 10px; }
             .nav-box { 
-                padding: 0 15px; /* Вернули обычный паддинг для мобилки, т.к. лого там нет */
+                padding: 0 15px; 
                 background: rgba(26,24,24,0.95); 
                 height: 50px;
             }
-            .logo-desk { display: none; } /* Скрываем лого на панели */
+            .logo-desk { display: none; }
             .nav-links, .btn-header-contact { display: none; }
-            .burger { display: flex; margin-left: auto; } /* Бургер справа */
+            .burger { display: flex; margin-left: auto; }
 
-            /* Hero Logo */
             .hero-logo-mob {
                 display: block;
-                width: 160px; /* Большой логотип */
-                margin: 0 0 20px 0; /* Отступ снизу до тега */
-                border-radius: 20px; /* Легкое скругление если квадратный */
+                width: 160px;
+                margin: 0 0 20px 0;
+                border-radius: 20px;
             }
 
-            /* Заголовок */
             h1 { font-size: 14vw; line-height: 0.85; }
             .mob-break { display: block; }
 
-            /* Bento */
             .bento-grid { display: flex; flex-direction: column; gap: 15px; }
             .card { padding: 20px; border-radius: var(--radius-mob); }
             .card-img { height: 220px; }
 
-            /* Marquee */
             .marquee-wrap {
                 width: 100vw; margin-left: -15px; margin-right: -15px;
                 transform: rotate(-2deg); margin-bottom: 50px;
             }
 
-            /* Charity */
             .charity-block { 
                 grid-template-columns: 1fr; padding: 25px 20px; 
                 border-radius: var(--radius-mob); width: 100%;
@@ -327,7 +353,6 @@
             .charity-gallery { display: flex; flex-direction: column; gap: 15px; margin-top: 20px; }
             .charity-gallery img { width: 100%; height: 200px; }
 
-            /* Другие секции */
             .gastro-wrapper { flex-direction: column-reverse; gap: 30px; margin-bottom: 60px; }
             .gastro-image img { transform: rotate(0); }
             .media-section { padding: 30px 15px; margin-bottom: 60px; }
@@ -339,8 +364,11 @@
 </head>
 <body>
 
-    <!-- Меню Гамбургер -->
+    <!-- Меню Гамбургер (Полноэкранное) -->
     <div class="mobile-menu" id="mobMenu">
+        <!-- Кнопка ЗАКРЫТЬ -->
+        <button class="close-btn" onclick="toggleMenu()">✕ Закрыть</button>
+
         <a href="#about" onclick="toggleMenu()">О проекте</a>
         <a href="#media" onclick="toggleMenu()">Медиа</a>
         <a href="#charity" onclick="toggleMenu()">Благотворительность</a>
@@ -350,7 +378,7 @@
     <!-- Навигация -->
     <header>
         <div class="nav-box">
-            <!-- Логотип для ПК (слева, во всю высоту) -->
+            <!-- Логотип для ПК -->
             <img src="pictures/logo.png" alt="Logo" class="logo-desk">
             
             <nav class="nav-links">
@@ -360,7 +388,7 @@
             </nav>
             <a href="#footer" class="btn btn-header-contact">Связаться</a>
 
-            <!-- Бургер (только моб) -->
+            <!-- Бургер -->
             <div class="burger" onclick="toggleMenu()">
                 <span></span>
                 <span></span>
@@ -376,7 +404,7 @@
         </div>
         <div class="container hero-content">
             
-            <!-- ЛОГОТИП ДЛЯ МОБИЛЬНОГО (над тегом) -->
+            <!-- Лого для мобильного -->
             <img src="pictures/logo.png" alt="Logo" class="hero-logo-mob">
 
             <div class="tag">ЖИГУЛЕВСК 2026</div>
@@ -544,18 +572,6 @@
     <script>
         function toggleMenu() {
             document.getElementById('mobMenu').classList.toggle('active');
-            const burger = document.querySelector('.burger');
-            const spans = burger.querySelectorAll('span');
-            
-            if (document.getElementById('mobMenu').classList.contains('active')) {
-                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-                spans[1].style.opacity = '0';
-                spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
-            } else {
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            }
         }
     </script>
 </body>
