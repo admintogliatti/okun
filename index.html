@@ -33,7 +33,7 @@
             background-color: var(--bg-body);
             color: var(--text-main);
             font-family: 'Manrope', sans-serif;
-            overflow-x: hidden; /* Критично для мобильных */
+            overflow-x: hidden;
             line-height: 1.6;
             font-size: 16px;
             width: 100%;
@@ -44,7 +44,7 @@
             font-family: 'Unbounded', sans-serif;
             text-transform: uppercase;
             font-weight: 800;
-            font-size: clamp(36px, 8vw, 100px); 
+            font-size: clamp(42px, 8vw, 100px); 
             line-height: 0.9;
             margin-bottom: 20px;
             letter-spacing: -1px;
@@ -54,7 +54,7 @@
             font-family: 'Unbounded', sans-serif;
             text-transform: uppercase;
             font-weight: 800;
-            font-size: clamp(24px, 5vw, 64px);
+            font-size: clamp(28px, 5vw, 64px);
             margin: 0;
             line-height: 1.1;
         }
@@ -68,7 +68,16 @@
 
         p { margin-bottom: 20px; }
         a { text-decoration: none; color: inherit; transition: 0.3s; }
-        img { display: block; width: 100%; height: auto; border-radius: inherit; }
+        
+        /* Глобальный фикс картинок */
+        img { 
+            display: block; 
+            width: 100%; 
+            max-width: 100%; /* Чтобы не вылезали */
+            height: auto; 
+            border-radius: inherit; 
+            object-fit: cover; /* Обрезка по центру */
+        }
 
         /* --- UI Components --- */
         .container {
@@ -94,6 +103,7 @@
             border: none;
             transition: all 0.3s;
             white-space: nowrap;
+            text-align: center;
         }
 
         .btn:hover {
@@ -141,7 +151,7 @@
             border: 1px solid rgba(255,255,255,0.1);
             max-width: var(--container);
             margin: 0 auto;
-            width: 100%; /* Чтобы не сжимался */
+            position: relative;
         }
 
         .logo-img { height: 32px; width: auto; }
@@ -151,6 +161,27 @@
             font-weight: 600; font-size: 13px; opacity: 0.8; 
         }
         .nav-links a:hover { opacity: 1; color: var(--accent); }
+
+        /* Гамбургер (скрыт на ПК) */
+        .burger { display: none; cursor: pointer; flex-direction: column; gap: 5px; z-index: 1002; }
+        .burger span { width: 24px; height: 2px; background: #fff; transition: 0.3s; }
+        
+        /* Мобильное меню (скрыто по умолчанию) */
+        .mobile-menu {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100vh;
+            background: var(--bg-body);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            transform: translateY(-100%);
+            transition: 0.4s ease-in-out;
+        }
+        .mobile-menu.active { transform: translateY(0); }
+        .mobile-menu a { font-family: 'Unbounded'; font-size: 24px; font-weight: 700; }
 
         /* --- Hero Section --- */
         .hero {
@@ -182,6 +213,9 @@
 
         .hero-content { position: relative; z-index: 2; width: 100%; }
 
+        /* Класс для переноса на мобильном */
+        .mob-break { display: none; }
+
         .hero-desc {
             font-size: clamp(16px, 4vw, 20px);
             max-width: 600px;
@@ -197,8 +231,6 @@
             margin: 40px 0 80px 0;
             width: 100vw;
             margin-left: calc(-50vw + 50%);
-            position: relative;
-            left: 0;
         }
         
         .marquee-content {
@@ -327,6 +359,7 @@
             gap: 40px;
             align-items: center;
             margin-bottom: 80px;
+            overflow: hidden; /* Чтобы ничего не вылезало */
         }
         .charity-block h2 { color: var(--bg-body); }
         .charity-gallery {
@@ -354,71 +387,94 @@
         }
 
         /* =========================================
-           МОБИЛЬНАЯ АДАПТАЦИЯ (ИСПРАВЛЕНИЯ)
+           МОБИЛЬНАЯ АДАПТАЦИЯ (HARD FIXES)
            ========================================= */
         @media (max-width: 900px) {
-            /* 1. Header Fix - чтобы не выезжал */
-            header { top: 10px; padding: 0 10px; }
+            /* 1. Header & Burger */
+            header { top: 0; padding: 10px; background: rgba(26,24,24,0.9); }
             .nav-box { 
-                padding: 8px 12px; 
-                justify-content: space-between;
+                padding: 8px 15px; 
+                background: none; 
+                border: none;
+                backdrop-filter: none;
             }
-            .nav-links { display: none; }
-            .logo-img { height: 24px; } /* Чуть меньше лого */
-            .btn { 
-                width: auto; 
-                padding: 10px 16px; 
-                font-size: 11px; 
-                height: 36px;
-            }
+            .nav-links { display: none; } /* Скрываем ссылки */
+            .btn-header-contact { display: none; } /* Скрываем кнопку в шапке */
+            .burger { display: flex; } /* Показываем гамбургер */
+            .logo-img { height: 28px; z-index: 1002; position: relative; }
 
-            /* 2. Общие отступы */
-            .section-title-wrap { margin-bottom: 25px; padding-left: 15px; }
+            /* 2. Заголовок "Жигу-левский" */
+            h1 { font-size: 14vw; line-height: 0.85; }
+            .mob-break { display: block; } /* Включаем перенос */
+
+            /* 3. Общие отступы */
+            .container { padding: 0 15px; }
+            .section-title-wrap { margin-bottom: 25px; border-left-width: 4px; padding-left: 15px; }
             
-            /* 3. Bento Grid - карточки в колонку */
+            /* 4. Bento Grid */
             .bento-grid { display: flex; flex-direction: column; gap: 15px; }
-            .card { min-height: auto; padding: 20px; border-radius: var(--radius-mob); }
-            .card-img { height: 220px; padding: 0; }
+            .card { padding: 20px; border-radius: var(--radius-mob); }
+            .card-img { height: 220px; }
 
-            /* 4. Бегущая строка - защита от скролла */
+            /* 5. Бегущая строка */
             .marquee-wrap {
                 width: 100vw;
-                margin-left: -20px; /* Компенсация паддинга контейнера */
-                margin-right: -20px;
-                transform: rotate(-2deg); /* Убираем scale, чтобы не вылезало */
-                margin-bottom: 60px;
+                margin-left: -15px; /* Компенсация паддинга */
+                margin-right: -15px;
+                transform: rotate(-2deg);
+                margin-bottom: 50px;
             }
 
-            /* 5. Гастрономия */
+            /* 6. Гастрономия */
             .gastro-wrapper { flex-direction: column-reverse; gap: 30px; margin-bottom: 60px; }
             .gastro-image img { transform: rotate(0); }
 
-            /* 6. Медиа */
-            .media-section { padding: 40px 15px; margin-bottom: 60px; }
+            /* 7. Медиа */
+            .media-section { padding: 30px 15px; margin-bottom: 60px; }
             .stats-row { flex-direction: column; gap: 30px; }
 
-            /* 7. Гости - строго одна колонка */
-            .people-grid {
-                grid-template-columns: 1fr; /* Было minmax, что ломало узкие экраны */
-                margin-bottom: 60px;
-            }
+            /* 8. Гости */
+            .people-grid { grid-template-columns: 1fr; margin-bottom: 60px; }
 
-            /* 8. Благотворительность (ДЕТИ) - ИСПРАВЛЕНО */
+            /* 9. БЛАГОТВОРИТЕЛЬНОСТЬ (FIXED) */
             .charity-block { 
                 grid-template-columns: 1fr; 
-                padding: 20px; /* Меньше отступов */
+                padding: 25px 20px; 
                 border-radius: var(--radius-mob);
                 margin-bottom: 60px;
+                width: 100%;
             }
             
-            /* Фотографии детей ставим в колонку, чтобы не сжимались */
+            /* Перенос длинного слова */
+            .charity-block h2 {
+                font-size: 26px; /* Уменьшаем шрифт */
+                overflow-wrap: break-word; 
+                word-wrap: break-word;
+                hyphens: auto; /* Авто-перенос по слогам */
+                -webkit-hyphens: auto;
+                line-height: 1.2;
+                max-width: 100%;
+            }
+
+            /* Кнопка внутри */
+            .charity-block .btn {
+                width: 100%;
+                white-space: normal; /* Разрешаем перенос текста в кнопке */
+                line-height: 1.2;
+                padding: 14px 20px;
+            }
+
+            /* Фото детей - обрезаем и ставим в колонку */
             .charity-gallery { 
-                grid-template-columns: 1fr; 
+                display: flex;
+                flex-direction: column;
                 gap: 15px;
+                margin-top: 20px;
             }
             .charity-gallery img {
-                height: 200px; /* Фиксированная высота для красоты */
                 width: 100%;
+                height: 200px; /* Фиксированная высота */
+                object-fit: cover; /* Обрезка лишнего */
             }
             
             /* Footer */
@@ -428,16 +484,33 @@
 </head>
 <body>
 
+    <!-- Меню Гамбургер (выпадает) -->
+    <div class="mobile-menu" id="mobMenu">
+        <a href="#about" onclick="toggleMenu()">О проекте</a>
+        <a href="#media" onclick="toggleMenu()">Медиа</a>
+        <a href="#charity" onclick="toggleMenu()">Благотворительность</a>
+        <a href="#footer" onclick="toggleMenu()">Контакты</a>
+    </div>
+
     <!-- Навигация -->
     <header>
         <div class="nav-box">
             <img src="pictures/logo.png" alt="Logo" class="logo-img">
+            
+            <!-- Десктоп меню -->
             <nav class="nav-links">
                 <a href="#about">О проекте</a>
                 <a href="#media">Медиа</a>
                 <a href="#charity">Благотворительность</a>
             </nav>
-            <a href="#footer" class="btn">Связаться</a>
+            <a href="#footer" class="btn btn-header-contact">Связаться</a>
+
+            <!-- Кнопка Гамбургер -->
+            <div class="burger" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
         </div>
     </header>
 
@@ -448,7 +521,8 @@
         </div>
         <div class="container hero-content">
             <div class="tag">ЖИГУЛЕВСК 2026</div>
-            <h1>ЖИГУЛЕВСКИЙ<br>ОКУНЬ</h1>
+            <!-- Модный перенос: ЖИГУ - ЛЕВСКИЙ -->
+            <h1>ЖИГУ<br class="mob-break">ЛЕВСКИЙ<br>ОКУНЬ</h1>
             <p class="hero-desc">
                 Ежегодный региональный фестиваль рыболовного спорта. 
                 Драйв, природа и крупнейшее медиа-освещение.
@@ -458,7 +532,7 @@
     </section>
 
     <!-- Бегущая строка -->
-    <div class="container" style="overflow: visible;"> <!-- Обертка для позиционирования -->
+    <div style="width: 100%; overflow: hidden;">
         <div class="marquee-wrap">
             <div class="marquee-content">
                 <div class="marquee-item">РЫБОЛОВНЫЙ СПОРТ</div>
@@ -579,12 +653,13 @@
     <section id="charity" class="container">
         <div class="charity-block">
             <div>
-                <h2 style="color: var(--bg-body);">БЛАГОТВОРИТЕЛЬНОСТЬ</h2>
+                <!-- hyphens: auto работает для переноса -->
+                <h2 lang="ru">БЛАГОТВОРИТЕЛЬНОСТЬ</h2>
                 <p style="font-size: 16px; margin: 20px 0; color: #333; font-weight: 500;">
                     По доброй традиции в мероприятии принимают участие воспитанники детского дома «Единство» (12-15 лет).
                 </p>
                 <div style="margin-top: 30px;">
-                    <div class="btn" style="background: var(--bg-body); color: var(--text-main); width: 100%;">Поддержать проект</div>
+                    <div class="btn" style="background: var(--bg-body); color: var(--text-main);">Поддержать проект</div>
                 </div>
             </div>
             <div class="charity-gallery">
@@ -607,5 +682,25 @@
         </div>
     </footer>
 
+    <!-- Скрипт для меню -->
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobMenu').classList.toggle('active');
+            
+            // Анимация иконки бургера
+            const burger = document.querySelector('.burger');
+            const spans = burger.querySelectorAll('span');
+            
+            if (document.getElementById('mobMenu').classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(5px, -5px)';
+            } else {
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        }
+    </script>
 </body>
 </html>
